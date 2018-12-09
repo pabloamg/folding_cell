@@ -7,7 +7,7 @@ class SimpleFoldingCell extends StatefulWidget {
     @required this.frontWidget,
     @required this.innerTopWidget,
     @required this.innerBottomWidget,
-    this.cellSize = const Size(100.0, 100.0),
+    this.cellSize = const Size(150.0, 50.0),
     this.unfoldCell = false,
     this.skipAnimation = false,
     this.padding = const EdgeInsets.only(left: 20, right: 20, bottom: 5, top: 10)})
@@ -86,9 +86,7 @@ class _SimpleFoldingCellState extends State<SimpleFoldingCell> with SingleTicker
   @override
   Widget build(BuildContext context) {
     final angle = _animVal * math.pi;
-    return GestureDetector(
-      onTap: _handleTap,
-      child: Padding(
+    return Padding(
         padding: widget.padding,
         child: Container(
           color: Colors.transparent,
@@ -96,12 +94,13 @@ class _SimpleFoldingCellState extends State<SimpleFoldingCell> with SingleTicker
           width: widget.cellSize.width,
           child: Stack(
             children: <Widget>[
-              Container(
+            GestureDetector(
+            onTap: _handleTap,
+              child:Container(
                 height: widget.cellSize.height,
                 width: widget.cellSize.width,
-//                color: Color(0xFFff9234),
                 child: widget.innerTopWidget,
-              ),
+              ),),
               Transform(
                 alignment: Alignment.bottomCenter,
                 transform: (Matrix4.identity()
@@ -113,12 +112,16 @@ class _SimpleFoldingCellState extends State<SimpleFoldingCell> with SingleTicker
                   child: Container(
                     height: widget.cellSize.height,
                     width: widget.cellSize.width,
-//                    color: Color(0xFFecf2f9),
-                    child: Opacity(opacity: 1 * _animVal,child: widget.innerBottomWidget,),
+                    child:_animVal<1 ? IgnorePointer(
+                      child: Opacity(opacity: 1.0 * _animVal,
+                      child: widget.innerBottomWidget,),
+                    ) : widget.innerBottomWidget
                   ),
                 ),
               ),
-              Transform(
+      GestureDetector(
+        onTap: _handleTap,
+        child:Transform(
                 alignment: Alignment.bottomCenter,
                 transform: (Matrix4.identity()
                   ..setEntry(3, 2, 0.001)
@@ -128,15 +131,13 @@ class _SimpleFoldingCellState extends State<SimpleFoldingCell> with SingleTicker
                   child: Container(
                     height: angle >= 1.5708 ? 0.0 : widget.cellSize.height,
                     width: angle >= 1.5708 ? 0.0 : widget.cellSize.width,
-//                    color: Color(0xFFffcd3c),
                     child: widget.frontWidget,
                   ),
                 ),
-              ),
+              ),)
             ],
           ),
         ),
-      )
     );
   }
 
