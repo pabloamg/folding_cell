@@ -114,7 +114,7 @@ class _SimpleFoldingCellState extends State<SimpleFoldingCell> with SingleTicker
                     height: widget.cellSize.height,
                     width: widget.cellSize.width,
 //                    color: Color(0xFFecf2f9),
-                    child: widget.innerBottomWidget,
+                    child: Opacity(opacity: 1 * _animVal,child: widget.innerBottomWidget,),
                   ),
                 ),
               ),
